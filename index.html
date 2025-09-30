@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kfz-Schadenaufnahme | Digitale Schadenmeldung</title>
+    <meta name="description" content="Moderne Web-Anwendung zur digitalen Aufnahme von Kfz-Schäden mit integrierter Foto-Upload-Funktion">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="icon" type="image/svg+xml" href="public/favicon.svg">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1 class="logo">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M3 7L9 2L15 7V20H3V7Z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        <path d="M9 21V12L15 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    Kfz-Schadenaufnahme
+                </h1>
+                <div class="user-info" id="userInfo" style="display: none;">
+                    <span id="userEmail"></span>
+                    <button type="button" class="btn btn-secondary" id="logoutBtn">Abmelden</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <div class="container">
+            <!-- Authentication Section -->
+            <section id="authSection" class="auth-section">
+                <div class="auth-card">
+                    <h2>Anmeldung erforderlich</h2>
+                    <p>Melden Sie sich an, um einen neuen Schaden zu erfassen oder bestehende Fälle einzusehen.</p>
+                    
+                    <form id="loginForm" class="auth-form">
+                        <div class="form-group">
+                            <label for="email">E-Mail-Adresse</label>
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                placeholder="ihre.email@beispiel.de"
+                                autocomplete="email"
+                            >
+                        </div>
+                        <button type="submit" class="btn btn-primary" id="loginSubmitBtn">
+                            Magic-Link senden
+                        </button>
+                    </form>
+                    
+                    <div id="authMessage" class="message" style="display: none;"></div>
+                </div>
+            </section>
+
+            <!-- Dashboard Section -->
+            <section id="dashboardSection" class="dashboard-section" style="display: none;">
+                <div class="dashboard-header">
+                    <h2>Meine Schadenfälle</h2>
+                    <button type="button" class="btn btn-primary" id="newClaimBtn">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Neuen Schaden melden
+                    </button>
+                </div>
+                
+                <div id="claimsList" class="claims-list">
+                    <!-- Claims will be loaded here -->
+                </div>
+            </section>
+
+            <!-- Claim Form Section -->
+            <section id="claimFormSection" class="claim-form-section" style="display: none;">
+                <div class="form-header">
+                    <button type="button" class="btn btn-secondary" id="backToDashboard">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M19 12H5M12 19L5 12L12 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        Zurück zur Übersicht
+                    </button>
+                    <h2>Schadenaufnahme</h2>
+                </div>
+
+                <!-- Progress Indicator -->
+                <div class="progress-indicator">
+                    <div class="progress-step active" data-step="1">
+                        <div class="step-number">1</div>
+                        <div class="step-label">Schaden</div>
+                    </div>
+                    <div class="progress-step" data-step="2">
+                        <div class="step-number">2</div>
+                        <div class="step-label">Fahrzeug</div>
+                    </div>
+                    <div class="progress-step" data-step="3">
+                        <div class="step-number">3</div>
+                        <div class="step-label">Beteiligte</div>
+                    </div>
+                    <div class="progress-step" data-step="4">
+                        <div class="step-number">4</div>
+                        <div class="step-label">Fotos</div>
+                    </div>
+                    <div class="progress-step" data-step="5">
+                        <div class="step-number">5</div>
+                        <div class="step-label">Übersicht</div>
+                    </div>
+                </div>
+
+                <!-- Wizard Form -->
+                <form id="claimWizardForm" class="wizard-form">
+                    <!-- Step 1: Schaden -->
+                    <div class="wizard-step active" data-step="1">
+                        <h3>Schritt 1: Schadendetails</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="dateOfLoss">Schadendatum und -uhrzeit *</label>
+                                <input 
+                                    type="datetime-local" 
+                                    id="dateOfLoss" 
+                                    name="date_of_loss" 
+                                    required
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="claimType">Schadenart *</label>
+                                <select id="claimType" name="claim_type" required>
+                                    <option value="">Bitte wählen...</option>
+                                    <option value="kasko">Vollkasko</option>
+                                    <option value="teilkasko">Teilkasko</option>
+                                    <option value="haftpflicht">Haftpflicht</option>
+                                    <option value="unbekannt">Unbekannt</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">Schadenort</label>
+                            <input 
+                                type="text" 
+                                id="location" 
+                                name="location" 
+                                placeholder="Straße, PLZ Ort"
+                            >
+                        </div>
+
+                        <div class="form-group">
+                            <label for="description">Schadenhergang *</label>
+                            <textarea 
+                                id="description" 
+                                name="description" 
+                                rows="4" 
+                                required
+                                placeholder="Beschreiben Sie bitte, wie es zu dem Schaden gekommen ist..."
+                            ></textarea>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="thirdPartyInvolved" name="third_party_involved">
+                                <span class="checkmark"></span>
+                                Weitere Personen/Fahrzeuge beteiligt
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Step 2: Fahrzeug -->
+                    <div class="wizard-step" data-step="2">
+                        <h3>Schritt 2: Fahrzeugdaten</h3>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="licensePlate">Kennzeichen *</label>
+                                <input 
+                                    type="text" 
+                                    id="licensePlate" 
+                                    name="license_plate" 
+                                    required
+                                    pattern="[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\\s?\\d{1,4}"
+                                    placeholder="HH-AB 1234"
+                                    style="text-transform: uppercase;"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="vin">Fahrzeug-Identifizierungsnummer (FIN)</label>
+                                <input 
+                                    type="text" 
+                                    id="vin" 
+                                    name="vin" 
+                                    placeholder="Optional"
+                                    maxlength="17"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="make">Hersteller</label>
+                                <input 
+                                    type="text" 
+                                    id="make" 
+                                    name="make" 
+                                    placeholder="z.B. BMW, Mercedes, Volkswagen"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="model">Modell</label>
+                                <input 
+                                    type="text" 
+                                    id="model" 
+                                    name="model" 
+                                    placeholder="z.B. Golf, A4, C-Klasse"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="modelYear">Baujahr</label>
+                                <input 
+                                    type="number" 
+                                    id="modelYear" 
+                                    name="model_year" 
+                                    min="1900" 
+                                    max="2025"
+                                    placeholder="2020"
+                                >
+                            </div>
+                            <div class="form-group">
+                                <label for="mileage">Kilometerstand</label>
+                                <input 
+                                    type="number" 
+                                    id="mileage" 
+                                    name="mileage" 
+                                    min="0"
+                                    placeholder="50000"
+                                >
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="drivable">Ist das Fahrzeug noch fahrbereit?</label>
+                            <select id="drivable" name="drivable">
+                                <option value="">Bitte wählen...</option>
+                                <option value="true">Ja, fahrbereit</option>
+                                <option value="false">Nein, nicht fahrbereit</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Beteiligte -->
+                    <div class="wizard-step" data-step="3">
+                        <h3>Schritt 3: Beteiligte Personen</h3>
+                        
+                        <div id="partiesContainer">
+                            <!-- Parties will be added dynamically -->
+                        </div>
+                        
+                        <button type="button" class="btn btn-secondary" id="addPartyBtn">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                            Person hinzufügen
+                        </button>
+                    </div>
+
+                    <!-- Step 4: Fotos -->
+                    <div class="wizard-step" data-step="4">
+                        <h3>Schritt 4: Fotos und Dokumente</h3>
+                        
+                        <div class="upload-section">
+                            <div class="upload-area" id="uploadArea">
+                                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M21 15V19A2 2 0 0119 21H5A2 2 0 013 19V15M17 8L12 3L7 8M12 3V15" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <p>Fotos hier ablegen oder klicken zum Auswählen</p>
+                                <p class="upload-hint">Unterstützte Formate: JPG, PNG, PDF (max. 10MB pro Datei)</p>
+                            </div>
+                            <input type="file" id="fileInput" multiple accept="image/*,.pdf" style="display: none;">
+                        </div>
+                        
+                        <div id="uploadedFiles" class="uploaded-files">
+                            <!-- Uploaded files will be shown here -->
+                        </div>
+                    </div>
+
+                    <!-- Step 5: Übersicht -->
+                    <div class="wizard-step" data-step="5">
+                        <h3>Schritt 5: Zusammenfassung</h3>
+                        
+                        <div id="claimSummary" class="claim-summary">
+                            <!-- Summary will be generated here -->
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="confirmAccuracy" required>
+                                <span class="checkmark"></span>
+                                Ich bestätige, dass alle Angaben nach bestem Wissen und Gewissen gemacht wurden.
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Navigation Buttons -->
+                    <div class="wizard-navigation">
+                        <button type="button" class="btn btn-secondary" id="prevStepBtn" style="display: none;">
+                            Zurück
+                        </button>
+                        <div class="nav-spacer"></div>
+                        <button type="button" class="btn btn-outline" id="saveDraftBtn">
+                            Als Entwurf speichern
+                        </button>
+                        <button type="button" class="btn btn-primary" id="nextStepBtn">
+                            Weiter
+                        </button>
+                        <button type="submit" class="btn btn-primary" id="submitClaimBtn" style="display: none;">
+                            Schaden einreichen
+                        </button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay" style="display: none;">
+        <div class="loading-spinner"></div>
+        <p>Wird verarbeitet...</p>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div id="toastContainer" class="toast-container"></div>
+
+    <!-- Scripts -->
+    <script type="module" src="app.js"></script>
+</body>
+</html>

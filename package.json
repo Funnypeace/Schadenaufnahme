@@ -1,0 +1,32 @@
+{
+  "name": "kfz-schadenaufnahme-app",
+  "version": "1.0.0",
+  "description": "Eine moderne Web-Anwendung zur digitalen Kfz-Schadenaufnahme mit Supabase Backend",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python3 -m http.server 3000",
+    "build": "echo 'Static build - no build step required'",
+    "start": "python3 -m http.server 8080"
+  },
+  "keywords": [
+    "kfz",
+    "schaden",
+    "versicherung",
+    "supabase",
+    "webapp"
+  ],
+  "author": "Manus AI",
+  "license": "MIT",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.39.0"
+  },
+  "devDependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/your-username/kfz-schadenaufnahme-app.git"
+  },
+  "bugs": {
+    "url": "https://github.com/your-username/kfz-schadenaufnahme-app/issues"
+  },
+  "homepage": "https://github.com/your-username/kfz-schadenaufnahme-app#readme"
+}

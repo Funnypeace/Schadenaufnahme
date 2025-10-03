@@ -1,6 +1,7 @@
 // app.js
 // Supabase initialization
-const supabase = createClient('https://deinprojekt.supabase.co', 'dein-anon-public-key')
+const { createClient } = supabase;
+const supabaseClient = createClient('https://DEINE-PROJEKT-ID.supabase.co', 'DEIN-ECHTER-ANON-KEY');
 
 document.addEventListener("DOMContentLoaded", () => {
   const newClaimBtn = document.getElementById("newClaimBtn");
@@ -54,6 +55,7 @@ async function submitClaim() {
     // Formular zurücksetzen / Wizard schließen
     document.getElementById("claimForm")?.reset();
     document.getElementById("wizard")?.classList.add("hidden");
+
   } catch (err) {
     console.error(err);
     alert("Fehler: " + err.message);

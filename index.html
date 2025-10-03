@@ -27,17 +27,15 @@
         </div>
       </div>
     </header>
-
     <!-- Main Content -->
     <main class="main">
       <div class="container">
         <!-- Authentication Section (temporarily removed: magic link login) -->
         <!-- REMOVED: <section id="authSection" class="auth-section"> ... </section> -->
-
         <!-- Dashboard Section -->
         <section id="dashboardSection" class="dashboard-section">
           <div class="dashboard-header">
-            Meine Schadenfälle
+            <h2>Meine Schadenfälle</h2>
             <button id="newClaimBtn" class="btn btn-primary" type="button">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M12 5V19M5 12H19" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
@@ -49,7 +47,6 @@
             <!-- Claims will be loaded here -->
           </div>
         </section>
-
         <!-- Claim Form Section -->
         <section id="claimFormSection" class="claim-form-section" style="display: none;">
           <div class="form-header">
@@ -59,9 +56,8 @@
               </svg>
               Zurück zur Übersicht
             </button>
-            Schadenaufnahme
+            <h2>Schadenaufnahme</h2>
           </div>
-
           <!-- Progress Indicator -->
           <div class="progress-indicator">
             <div class="progress-step active" data-step="1">
@@ -85,7 +81,6 @@
               <div class="step-label">Übersicht</div>
             </div>
           </div>
-
           <!-- Wizard Form -->
           <form id="claimWizardForm" class="wizard-form">
             <!-- Step 1: Schaden -->
@@ -113,7 +108,7 @@
               </div>
               <div class="form-group">
                 <label for="description">Schadenhergang *</label>
-                <textarea id="description" name="description" rows="4" required placeholder="Beschreiben Sie bitte, wie es zu dem Schaden gekommen ist..."></textarea>
+                <textarea id="description" name="description" rows="4" placeholder="Beschreiben Sie bitte, wie es zu dem Schaden gekommen ist..." required></textarea>
               </div>
               <div class="form-group">
                 <label class="checkbox-label">
@@ -123,14 +118,13 @@
                 </label>
               </div>
             </div>
-
             <!-- Step 2: Fahrzeug -->
             <div class="wizard-step" data-step="2">
               <h3>Schritt 2: Fahrzeugdaten</h3>
               <div class="form-row">
                 <div class="form-group">
                   <label for="licensePlate">Kennzeichen *</label>
-                  <input type="text" id="licensePlate" name="license_plate" required pattern="[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\s?\d{1,4}" placeholder="HH-AB 1234" style="text-transform: uppercase;" />
+                  <input type="text" id="licensePlate" name="license_plate" pattern="[A-ZÄÖÜ]{1,3}-[A-Z]{1,2}\s?\d{1,4}" placeholder="HH-AB 1234" required style="text-transform: uppercase;" />
                 </div>
                 <div class="form-group">
                   <label for="vin">Fahrzeug-Identifizierungsnummer (FIN)</label>
@@ -166,7 +160,6 @@
                 </select>
               </div>
             </div>
-
             <!-- Step 3: Beteiligte -->
             <div class="wizard-step" data-step="3">
               <h3>Schritt 3: Beteiligte Personen</h3>
@@ -178,7 +171,6 @@
                 Person hinzufügen
               </button>
             </div>
-
             <!-- Step 4: Fotos -->
             <div class="wizard-step" data-step="4">
               <h3>Schritt 4: Fotos und Dokumente</h3>
@@ -194,7 +186,6 @@
               </div>
               <div id="uploadedFiles" class="uploaded-files"></div>
             </div>
-
             <!-- Step 5: Übersicht -->
             <div class="wizard-step" data-step="5">
               <h3>Schritt 5: Zusammenfassung</h3>
@@ -207,7 +198,6 @@
                 </label>
               </div>
             </div>
-
             <!-- Navigation Buttons -->
             <div class="wizard-navigation">
               <button type="button" id="prevStepBtn" class="btn btn-secondary" style="display: none;">Zurück</button>
@@ -220,17 +210,15 @@
         </section>
       </div>
     </main>
-
     <!-- Loading Overlay -->
     <div id="loadingOverlay" class="loading-overlay" style="display: none;">
       <div class="loading-spinner"></div>
       Wird verarbeitet...
     </div>
-
     <!-- Toast Notifications -->
     <div id="toastContainer" class="toast-container"></div>
-
     <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script type="module" src="app.js"></script>
   </body>
 </html>

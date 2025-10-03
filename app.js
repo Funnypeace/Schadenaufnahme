@@ -1,4 +1,7 @@
 // app.js
+// Supabase initialization
+const supabase = createClient('https://deinprojekt.supabase.co', 'dein-anon-public-key')
+
 document.addEventListener("DOMContentLoaded", () => {
   const newClaimBtn = document.getElementById("newClaimBtn");
   const claimForm   = document.getElementById("claimForm");
